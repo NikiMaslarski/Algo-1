@@ -20,8 +20,8 @@ public class Vector<E> {
 		if(this.arrIsFull())
 			this.resize(this.capacity * 2);
 		
-		for(int i = index; i < size; ++i)
-			this.array[i + 1] = this.array[i];
+		for(int i = size; i > index; --i)
+			this.array[i] = this.array[i-1];
 		this.array[index] = value;
 	}
 	
