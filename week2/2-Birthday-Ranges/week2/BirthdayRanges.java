@@ -2,11 +2,9 @@ package week2;
 
 public class BirthdayRanges {
 	public static void main(String[] args) {
-		int[] birthdays = { 5, 6, 7, 8, 10, 44, 101, 101, 102,
-				123 };
-		int[][] ranges = { {4, 365} };
-		// , { 40, 90 }, { 100, 110 }, { 300, 365 },
-		// { 1, 365 } };
+		int[] birthdays = { 1, 1, 1, 4, 5, 6, 7, 8, 10, 44, 101, 101, 102, 123 };
+		int[][] ranges = { {1, 60 }, { 40, 90 }, { 100, 110 }, { 300, 365 },
+		 { 1, 365 } };
 
 		int[] result = new int[ranges.length];
 		result = birthdays_count(birthdays, ranges);
@@ -36,19 +34,20 @@ public class BirthdayRanges {
 	private static int findIndex(int[] birthdays, int element) {
 		int left = 0;
 		int right = birthdays.length - 1;
-		int middle = right;
 
-		while (left <= right) {
-			if (left == right)
-				return left;
+		while (left < right) {
 
 			double interpolConst = (double) (element - birthdays[left])
 					/ (double) (birthdays[right] - birthdays[left]);
 
-			if (interpolConst > 1 || interpolConst < 0)
-				return middle;
+			int middle = left
+					+ (int) Math.round((interpolConst * (right - left)));
 
-			middle = left + (int) Math.round((interpolConst * (right - left)));
+			if (interpolConst > 1)
+				return right + (int)Math.floor((interpolConst));
+
+			if (interpolConst < 0)
+				return left + (int)Math.ceil(interpolConst);
 
 			if (element < birthdays[middle])
 				right = middle - 1;
@@ -57,6 +56,6 @@ public class BirthdayRanges {
 			else
 				return middle;
 		}
-		return -1;
+		return left + 1; // birthday[left] == birthday[right] == element
 	}
 }
