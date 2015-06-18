@@ -38,7 +38,10 @@ public class Quadruplets {
 		}
 		
 		//Will figure out something in the future
-		
+	
+//		Arrays.sort(arr1);
+//		Arrays.sort(arr2);
+//		
 //		int p1 = 0;
 //		int p2 = arr2.length - 1;
 //		int sum;
