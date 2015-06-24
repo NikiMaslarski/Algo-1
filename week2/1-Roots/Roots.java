@@ -1,5 +1,3 @@
-package week2;
-
 public class Roots {
 
 	private static double PRECISION = 0.0000000001;

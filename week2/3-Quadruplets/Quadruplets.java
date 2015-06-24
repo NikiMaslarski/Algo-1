@@ -1,5 +1,3 @@
-package week2;
-
 public class Quadruplets {
 	public static void main(String[] args) {
 		int[] a1 = { 5, 3, 4 };

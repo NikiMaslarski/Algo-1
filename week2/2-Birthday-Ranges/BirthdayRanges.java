@@ -1,5 +1,3 @@
-package week2;
-
 public class BirthdayRanges {
 	public static void main(String[] args) {
 		int[] birthdays = { 1, 1, 1, 4, 5, 6, 7, 8, 10, 44, 101, 101, 102, 123 };
