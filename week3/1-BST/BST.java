@@ -9,19 +9,18 @@ public class BST {
 
   // Checks if a binary tree is a binary search tree.
   public boolean isBST(Node root) {
-    if(root.left != null){
-    	if(root.left.value <= root.value)
-    		isBST(root.left);
-    	else
-    		return false;
-    }
-    if(root.right != null){
-    	if(root.right.value >= root.value)
-    		isBST(root.right);
-    	else
-    		return false;
-    }
-    return true;
-    
+    return isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
   }
+ 
+  private boolean isValidBST(Node node, int MIN, int MAX) {
+	     if(node == null)
+	         return true;
+	     if(node.value > MIN 
+	         && node.value < MAX
+	         && isValidBST(node.left, MIN, Math.min(node.value,MAX))
+	         && isValidBST(node.right, Math.max(node.value,MIN), MAX))
+	         return true;
+	     else 
+	         return false;
+	}
 }
