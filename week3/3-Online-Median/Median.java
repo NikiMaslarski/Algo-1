@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -105,26 +104,11 @@ public class Median {
 		Scanner sc = new Scanner(System.in);
 		Median test = new Median();
 
-		// int[] arr = {3, 1, 6, 10, 7, 45,32, 4, 34, 43,133};
-		// Heap minHeap = test.new Heap(true);
-		// for(int i:arr)
-		// minHeap.insert(i);
-		// minHeap.printHeap();
-		//
-		//
-		// Heap maxHeap = test.new Heap(false);
-		// for(int i:arr)
-		// maxHeap.insert(i);
-		// maxHeap.printHeap();
-		//
-		// for(int i = 0; i < arr.length; ++i)
-		// System.out.println(maxHeap.popTop());
-
 		do {
 			System.out.printf("Add number: ");
 			number = sc.nextInt();
 			System.out.printf("New median: %d\n", test.insert(number));
-		} while (number != 0);
+		} while (sc.hasNext());
 
 		sc.close();
 	}
@@ -137,21 +121,22 @@ public class Median {
 				maxHeap.insert(number);
 				return number;
 			} else {
-				if (maxHeap.getTop() < number) {
+				if (maxHeap.getTop() > number) {
 					minHeap.insert(maxHeap.popTop());
 					maxHeap.insert(number);
 				} else
 					minHeap.insert(number);
 
-				return (maxHeap.getTop() + minHeap.getTop())/2;
+				return (int)Math.ceil((maxHeap.getTop() + minHeap.getTop())/2);
 			}
 		}
 		
-		int median = getMedian();
-		if (number < median)
+		if (number < minHeap.getTop())
 			maxHeap.insert(number);
 		else
 			minHeap.insert(number);
+		
+		balanceHeaps();
 
 		return getMedian();
 	}
@@ -162,10 +147,10 @@ public class Median {
 		if (minHeap.size() > maxHeap.size())
 			return minHeap.getTop();
 
-		return (minHeap.getTop() + maxHeap.getTop());
+		return (int)Math.ceil((minHeap.getTop() + maxHeap.getTop())/2);
 	}
 	
-	private void fixHeaps(){
+	private void balanceHeaps(){
 		if(minHeap.size() == maxHeap.size() + 2)
 			maxHeap.insert(minHeap.popTop());
 		if(maxHeap.size() == minHeap.size() + 2)
