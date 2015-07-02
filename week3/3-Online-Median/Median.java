@@ -96,18 +96,17 @@ public class Median {
 		public int size() {
 			return heap.size();
 		}
-
 	}
 
 	public static void main(String[] args) {
 		int number;
 		Scanner sc = new Scanner(System.in);
 		Median test = new Median();
+		number = sc.nextInt();
 
 		do {
-			System.out.printf("Add number: ");
 			number = sc.nextInt();
-			System.out.printf("New median: %d\n", test.insert(number));
+			System.out.printf("%d\n", test.insert(number));
 		} while (sc.hasNext());
 
 		sc.close();
@@ -127,7 +126,7 @@ public class Median {
 				} else
 					minHeap.insert(number);
 
-				return (int)Math.ceil((maxHeap.getTop() + minHeap.getTop())/2);
+				return Math.max(minHeap.getTop(), maxHeap.getTop());
 			}
 		}
 		
@@ -147,7 +146,7 @@ public class Median {
 		if (minHeap.size() > maxHeap.size())
 			return minHeap.getTop();
 
-		return (int)Math.ceil((minHeap.getTop() + maxHeap.getTop())/2);
+		return Math.max(minHeap.getTop(), maxHeap.getTop());
 	}
 	
 	private void balanceHeaps(){

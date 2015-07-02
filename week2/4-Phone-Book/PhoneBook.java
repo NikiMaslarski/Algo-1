@@ -12,7 +12,6 @@ public class PhoneBook {
 		};
 
 		public Contact(String name, int number) {
-			// TODO Auto-generated constructor stub
 			this.name = name;
 			this.number = number;
 		}

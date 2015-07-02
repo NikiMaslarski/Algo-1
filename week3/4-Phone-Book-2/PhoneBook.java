@@ -86,8 +86,10 @@ public class PhoneBook {
 				if(current.left == null)
 					return current.right;
 				
-				current = getMin(current.right);
-				current.right  = deleteMin(current.right);
+				Node temp = current;
+				current = getMin(temp.right);
+				current.right  = deleteMin(temp.right);
+				current.left = temp.left;
 					
 			}
 			return current;
@@ -100,8 +102,11 @@ public class PhoneBook {
 		}
 		
 		private Node deleteMin(Node current){
-			current = getMin(current);
-			return current.right;
+			if(current.left == null)
+				return current.right;
+			current = deleteMin(current.left);
+			return current;
+			
 		}
 	}
 
