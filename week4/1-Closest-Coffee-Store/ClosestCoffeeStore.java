@@ -34,13 +34,13 @@ public class ClosestCoffeeStore {
 				}
 			}
 		}
+		int startingPoint = sc.nextInt();
 
 		boolean[] isCoffeStore = new boolean[size];
 		for (int i = 0; i < size; ++i)
 			if (sc.nextInt() == 1)
 				isCoffeStore[i] = true;
 
-		int startingPoint = sc.nextInt();
 
 		System.out.println(closestCoffeeStore(neighborList, isCoffeStore,
 				startingPoint));
