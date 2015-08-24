@@ -1,5 +1,10 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class PhoneBook {
 
@@ -11,7 +16,7 @@ public class PhoneBook {
 		public Contact() {
 		};
 
-		public Contact(String name, int number) {
+		public Contact(int number, String name) {
 			this.name = name;
 			this.number = number;
 		}
@@ -19,21 +24,25 @@ public class PhoneBook {
 
 	public static void main(String[] args) {
 
+		MyScanner sc = new MyScanner();
+
+		int N = sc.nextInt();
+		int M = sc.nextInt();
+
 		List<Integer> numbers = new ArrayList<Integer>();
-		numbers.add(15);
-		numbers.add(8);
-		
 		List<Contact> phoneBook = new ArrayList<Contact>();
 
-		phoneBook.add(new Contact("Stanislav", 1));
-		phoneBook.add(new Contact("Rado", 15));
-		phoneBook.add(new Contact("Ivan", 6));
-		phoneBook.add(new Contact("Ivan", 8));
+		for (int i = 0; i < N; ++i)
+			phoneBook.add(new Contact(sc.nextInt(), sc.next()));
+
+		for (int i = 0; i < M; ++i)
+			numbers.add(sc.nextInt());
 
 		List<String> people = lookupNames(phoneBook, numbers);
 
 		for (String i : people)
 			System.out.println(i);
+
 	}
 
 	// Find the names of people based on their phone numbers.
@@ -46,7 +55,7 @@ public class PhoneBook {
 		for (int number : numbers) {
 			people.add(getName(phoneBook, number));
 		}
-		
+
 		return people;
 	}
 
@@ -73,4 +82,52 @@ public class PhoneBook {
 				return element.name;
 		return "NotFound";
 	}
+
+	// -------------------------------------------------------------
+
+	public static PrintWriter out;
+
+	public static class MyScanner {
+		BufferedReader br;
+		StringTokenizer st;
+
+		public MyScanner() {
+			br = new BufferedReader(new InputStreamReader(System.in));
+		}
+
+		String next() {
+			while (st == null || !st.hasMoreElements()) {
+				try {
+					st = new StringTokenizer(br.readLine());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return st.nextToken();
+		}
+
+		int nextInt() {
+			return Integer.parseInt(next());
+		}
+
+		long nextLong() {
+			return Long.parseLong(next());
+		}
+
+		double nextDouble() {
+			return Double.parseDouble(next());
+		}
+
+		String nextLine() {
+			String str = "";
+			try {
+				str = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return str;
+		}
+	}
+
+	// ------------------------------------------------------------------
 }

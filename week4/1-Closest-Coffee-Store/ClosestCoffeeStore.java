@@ -1,80 +1,115 @@
-import java.io.BufferedOutputStream;
-import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
-
+import java.util.StringTokenizer;
 
 public class ClosestCoffeeStore {
-	private static class Node {
-		int current;
-		Node next;
-
-		public Node(int value) {
-			this.current = value;
-		}
-
-	}
-
-	private static Node insert(Node root, int element) {
-		Node temp = new Node(element);
-		temp.next = root;
-		return temp;
-	}
 
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int size = sc.nextInt();
-		Node[] neighborList = new Node[size];
-		int temp;
+		MyScanner sc = new MyScanner();
 
-		for (int i = 0; i < size; ++i) {
-			for (int j = 0; j < size; ++j) {
-				temp = sc.nextInt();
-				if (temp == 1) {
-					neighborList[i] = insert(neighborList[i], j);
-				}
-			}
-		}
-		int startingPoint = sc.nextInt();
+		int n = sc.nextInt();
+		int[][] adjMatrix = new int[n][n];
+		int startingPoint;
+		boolean[] isCoffeeStore = new boolean[n];
 
-		boolean[] isCoffeStore = new boolean[size];
-		for (int i = 0; i < size; ++i)
+		for (int i = 0; i < n; ++i)
+			for (int j = 0; j < n; ++j)
+				adjMatrix[i][j] = sc.nextInt();
+
+		startingPoint = sc.nextInt();
+
+		for (int i = 0; i < n; ++i)
 			if (sc.nextInt() == 1)
-				isCoffeStore[i] = true;
+				isCoffeeStore[i] = true;
 
-
-		System.out.println(closestCoffeeStore(neighborList, isCoffeStore,
+		System.out.println(closestCoffeStore(adjMatrix, isCoffeeStore,
 				startingPoint));
-
-		sc.close();
 	}
 
-	public static int closestCoffeeStore(Node[] graph, boolean[] isCoffeStore,
-			int startingPoint) {
-
-		int size = graph.length;
-		int current;
-
+	private static int closestCoffeStore(int[][] adjMatrix,
+			boolean[] isCoffeeStore, int startingPoint) {
+		int n = isCoffeeStore.length;
+		int currentLevel = 0;
+		boolean[] notVisited = new boolean[n]; 
 		Queue<Integer> queue = new LinkedList<Integer>();
-		boolean color[] = new boolean[size]; // false = white, true = black
 
 		queue.add(startingPoint);
-		color[startingPoint] = true;
+		notVisited[startingPoint] = true;
+
+		boolean switchLevel = true;
+		int switchLevelOn = startingPoint;
 
 		while (!queue.isEmpty()) {
-			current = queue.poll();
-			for (Node i = graph[current]; i != null; i = i.next) {
-				
-				if(isCoffeStore[i.current])
-					return i.current;
-				
-				if (!color[i.current]) {
-					queue.add(i.current);
-					color[i.current] = true;
+			int current = queue.poll();
+			if (current == switchLevelOn) {
+				switchLevel = true;
+				currentLevel++;
+			}
+			for (int i = 0; i < n; ++i) {
+				if (adjMatrix[current][i] == 1 && notVisited[i] == false) {
+					if (switchLevel) {
+						switchLevelOn = i;
+						switchLevel = false;
+					}
+
+					if (isCoffeeStore[i])
+						return currentLevel;
+
+					queue.add(i);
+					notVisited[i] = true;
 				}
 			}
 		}
+
 		return -1;
 	}
+
+	// -------------------------------------------------------------
+
+	public static class MyScanner {
+		BufferedReader br;
+		StringTokenizer st;
+
+		public MyScanner() {
+			br = new BufferedReader(new InputStreamReader(System.in));
+		}
+
+		String next() {
+			while (st == null || !st.hasMoreElements()) {
+				try {
+					st = new StringTokenizer(br.readLine());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return st.nextToken();
+		}
+
+		int nextInt() {
+			return Integer.parseInt(next());
+		}
+
+		long nextLong() {
+			return Long.parseLong(next());
+		}
+
+		double nextDouble() {
+			return Double.parseDouble(next());
+		}
+
+		String nextLine() {
+			String str = "";
+			try {
+				str = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return str;
+		}
+	}
+
+	// ------------------------------------------------------------------
 }

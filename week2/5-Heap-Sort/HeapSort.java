@@ -1,4 +1,9 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class HeapSort {
 
@@ -89,10 +94,19 @@ public class HeapSort {
 
 	public static void main(String[] args) {
 
-		int[] arr = { 4, 13, 52, 7, 18, 3, 1, 6 };
 		HeapSort test = new HeapSort();
-		test.sort(arr);
-		System.out.println(Arrays.toString(arr));
+		MyScanner sc = new MyScanner();
+		
+		int N = sc.nextInt();
+		int[] array = new int[N];
+		
+		for (int i = 0; i < N; i++) {
+			array[i] = sc.nextInt();
+		}
+		
+		test.sort(array);
+		for(int i : array)
+			System.out.printf("%d ", i);
 
 	}
 
@@ -106,4 +120,52 @@ public class HeapSort {
 		for (int i = sequence.length - 1; i >= 0; --i)
 			sequence[i] = heap.popTop();
 	}
+	
+	// -------------------------------------------------------------
+
+	public static PrintWriter out;
+
+	public static class MyScanner {
+		BufferedReader br;
+		StringTokenizer st;
+
+		public MyScanner() {
+			br = new BufferedReader(new InputStreamReader(System.in));
+		}
+
+		String next() {
+			while (st == null || !st.hasMoreElements()) {
+				try {
+					st = new StringTokenizer(br.readLine());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return st.nextToken();
+		}
+
+		int nextInt() {
+			return Integer.parseInt(next());
+		}
+
+		long nextLong() {
+			return Long.parseLong(next());
+		}
+
+		double nextDouble() {
+			return Double.parseDouble(next());
+		}
+
+		String nextLine() {
+			String str = "";
+			try {
+				str = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return str;
+		}
+	}
+
+	// ------------------------------------------------------------------
 }

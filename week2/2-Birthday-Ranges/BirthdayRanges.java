@@ -1,59 +1,96 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 public class BirthdayRanges {
 	public static void main(String[] args) {
-		int[] birthdays = { 1, 1, 1, 4, 5, 6, 7, 8, 10, 44, 101, 101, 102, 123 };
-		int[][] ranges = { {1, 60 }, { 40, 90 }, { 100, 110 }, { 300, 365 },
-		 { 1, 365 } };
 
-		int[] result = new int[ranges.length];
-		result = birthdays_count(birthdays, ranges);
+		MyScanner sc = new MyScanner();
+		int N = sc.nextInt();
+		int M = sc.nextInt();
 
-		for (int e : result)
-			System.out.println(e);
-	}
+		int[] birthdays = new int[N];
+		int[][] ranges = new int[M][2];
 
-	public static int[] birthdays_count(int[] birthdays, int[][] ranges) {
-		int[] numberOfPeople = new int[ranges.length];
+		for (int i = 0; i < N; ++i)
+			birthdays[i] = sc.nextInt();
 
-		for (int i = 0; i < ranges.length; ++i) {
-			numberOfPeople[i] = getNumberOfBirthdaysInRange(birthdays,
-					ranges[i][0], ranges[i][1]);
+		for (int i = 0; i < M; ++i) {
+			ranges[i][0] = sc.nextInt();
+			ranges[i][1] = sc.nextInt();
 		}
 
-		return numberOfPeople;
+		int birthdayUntillDay[] = new int[366];
+		birthdayUntillDay = countBirthdays(birthdays);
 
-	}
-
-	private static int getNumberOfBirthdaysInRange(int[] birthdays, int lo,
-			int hi) {
-		return findIndex(birthdays, hi) - findIndex(birthdays, lo);
-
-	}
-
-	private static int findIndex(int[] birthdays, int element) {
-		int left = 0;
-		int right = birthdays.length - 1;
-
-		while (left < right) {
-
-			double interpolConst = (double) (element - birthdays[left])
-					/ (double) (birthdays[right] - birthdays[left]);
-
-			int middle = left
-					+ (int) Math.round((interpolConst * (right - left)));
-
-			if (interpolConst > 1)
-				return right + (int)Math.floor((interpolConst));
-
-			if (interpolConst < 0)
-				return left + (int)Math.ceil(interpolConst);
-
-			if (element < birthdays[middle])
-				right = middle - 1;
-			else if (element > birthdays[middle])
-				left = middle + 1;
-			else
-				return middle;
+		for (int i = 0; i < M; ++i) {
+			System.out.println(birthdayUntillDay[ranges[i][1]]
+					- birthdayUntillDay[ranges[i][0]]
+					+ birthdayUntillDay[ranges[i][0]]
+					- birthdayUntillDay[ranges[i][0] - 1]);
 		}
-		return left + 1; // birthday[left] == birthday[right] == element
 	}
+
+	private static int[] countBirthdays(int[] birthdays) {
+		int temp[] = new int[366];
+		for (int i : birthdays)
+			temp[i]++;
+
+		for (int i = 0; i < 365; ++i)
+			temp[i + 1] += temp[i];
+
+		return temp;
+	}
+
+
+	// -------------------------------------------------------------
+
+	public static PrintWriter out;
+
+	public static class MyScanner {
+		BufferedReader br;
+		StringTokenizer st;
+
+		public MyScanner() {
+			br = new BufferedReader(new InputStreamReader(System.in));
+		}
+
+		String next() {
+			while (st == null || !st.hasMoreElements()) {
+				try {
+					st = new StringTokenizer(br.readLine());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return st.nextToken();
+		}
+
+		int nextInt() {
+			return Integer.parseInt(next());
+		}
+
+		long nextLong() {
+			return Long.parseLong(next());
+		}
+
+		double nextDouble() {
+			return Double.parseDouble(next());
+		}
+
+		String nextLine() {
+			String str = "";
+			try {
+				str = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return str;
+		}
+	}
+
+	// ------------------------------------------------------------------
 }

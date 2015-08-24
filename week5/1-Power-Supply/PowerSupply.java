@@ -28,7 +28,7 @@ public class PowerSupply {
 			i2 = sc.nextInt();
 			value = sc.nextInt();
 			
-			if(biggestVertex < Math.max(i1, i1))
+			if(biggestVertex < Math.max(i1, i2))
 				biggestVertex = Math.max(i1, i2);
 
 			neighboursMatrix[i1][i2] = value;
